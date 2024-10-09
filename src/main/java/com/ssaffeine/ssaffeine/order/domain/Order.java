@@ -40,6 +40,10 @@ public class Order {
 	@Column(nullable = false)
 	private Integer quantity;  // 주문 수량
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private OrderStatus orderStatus;  // 주문 상태 (enum: 주문 대기, 주문 완료, 주문 취소)
+
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime createdAt;  // created_at과 매핑
 
@@ -56,4 +60,10 @@ public class Order {
 	protected void onUpdate() {
 		this.updatedAt = LocalDateTime.now();
 	}
+}
+
+enum OrderStatus {
+	ORDER_PENDING,    // 주문 대기 -> 골 달성 대기
+	ORDER_COMPLETE,   // 주문 완료 -> 골 달성 후 입금 완료
+	ORDER_CANCELLED   // 주문 취소 -> 사용자 취소, 미결제 취소, 골 미달성
 }
