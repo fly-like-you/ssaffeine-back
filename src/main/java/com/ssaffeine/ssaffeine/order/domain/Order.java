@@ -1,4 +1,4 @@
-package com.ssaffeine.ssaffeine.orders.domain;
+package com.ssaffeine.ssaffeine.order.domain;
 
 import com.ssaffeine.ssaffeine.surveys.domain.Survey;
 import com.ssaffeine.ssaffeine.users.domain.User;
