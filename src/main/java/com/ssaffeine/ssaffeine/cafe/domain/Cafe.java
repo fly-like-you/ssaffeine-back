@@ -22,10 +22,10 @@ public class Cafe {
     @Column(name = "cafe_id")
     private Integer cafeId;
 
-    @Column(name = "cafe_name", length = 50)
+    @Column(name = "name", length = 50)
     private String cafeName;
 
-    @Column(name = "cafe_number", length = 20)
+    @Column(name = "number", length = 20)
     @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "Invalid cafe number format. Expected format: XXX-XXXX-XXXX")
     private String cafeNumber;
 
