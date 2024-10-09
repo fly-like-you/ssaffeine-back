@@ -1,0 +1,27 @@
+package com.ssaffeine.ssaffeine.order.dto;
+
+import com.ssaffeine.ssaffeine.order.domain.OrderStatus;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderResponseDto {
+    private Long orderId;  // 주문 ID
+    private Long surveyId;  // 설문 ID
+    private String surveyTitle;  // 설문 제목
+    private Long userId;  // 사용자 ID
+    private String userName;  // 사용자 이름
+    private Long drinkId;  // 음료 ID
+    private String drinkName;  // 음료 이름
+    private Integer weekday;  // 주문 요일
+    private Integer quantity;  // 주문 수량
+    private OrderStatus orderStatus;  // 주문 상태
+    private LocalDateTime createdAt;  // 생성일
+    private LocalDateTime updatedAt;  // 수정일
+}
