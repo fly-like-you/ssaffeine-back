@@ -23,6 +23,6 @@ public class Cafe {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @Column(name = "cafe_number", length = 20, nullable = false)
+    @Column(name = "number", length = 20, nullable = false)
     private String cafeNumber;
 }
