@@ -18,7 +18,7 @@ public class Survey {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long surveyId;  // survey_id와 매핑
+	private Long survey_id;  // survey_id와 매핑
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -32,20 +32,18 @@ public class Survey {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private SurveyStatus surveyStatus;  // 설문 상태 (enum: 설문 진행, 입금 대기, 결제 중, 입금 마감, 설문 마감)
+	private SurveyStatus survey_status;  // 설문 상태 (enum: 설문 진행, 입금 대기, 결제 중, 입금 마감, 설문 마감)
 
 	@Column(nullable = false)
 	private Integer goal;  // 모집 인원 달성 여부
 
 	@Column(nullable = false, updatable = false)
-	private LocalDateTime createdAt;  // 작성일
+	private LocalDateTime created_at;  // 작성일
 
 	@PrePersist
 	protected void onCreate() {
-		this.createdAt = LocalDateTime.now();
+		this.created_at = LocalDateTime.now();
 	}
-
-
 }
 
 // 설문 진행, 입금 대기, 결제 중, 입금 마감, 설문 마감)

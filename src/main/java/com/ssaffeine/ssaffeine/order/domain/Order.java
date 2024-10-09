@@ -20,7 +20,7 @@ public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long orderId;  // order_id와 매핑
+	private Long order_id;  // order_id와 매핑
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "survey_id", nullable = false)
@@ -42,23 +42,23 @@ public class Order {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private OrderStatus orderStatus;  // 주문 상태 (enum: 주문 대기, 주문 완료, 주문 취소)
+	private OrderStatus order_status;  // 주문 상태 (enum: 주문 대기, 주문 완료, 주문 취소)
 
 	@Column(nullable = false, updatable = false)
-	private LocalDateTime createdAt;  // created_at과 매핑
+	private LocalDateTime created_at;  // created_at과 매핑
 
 	@Column(nullable = false)
-	private LocalDateTime updatedAt;  // updated_at과 매핑
+	private LocalDateTime updated_at;  // updated_at과 매핑
 
 	@PrePersist
 	protected void onCreate() {
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = LocalDateTime.now();
-}
+		this.created_at = LocalDateTime.now();
+		this.updated_at = LocalDateTime.now();
+	}
 
-@PreUpdate
+	@PreUpdate
 	protected void onUpdate() {
-		this.updatedAt = LocalDateTime.now();
+		this.updated_at = LocalDateTime.now();
 	}
 }
 
