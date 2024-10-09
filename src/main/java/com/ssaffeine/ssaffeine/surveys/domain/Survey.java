@@ -18,7 +18,7 @@ public class Survey {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer surveyId;  // survey_id와 매핑
+	private Long surveyId;  // survey_id와 매핑
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
