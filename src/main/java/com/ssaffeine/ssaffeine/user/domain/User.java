@@ -1,4 +1,4 @@
-package com.ssaffeine.ssaffeine.users.domain;
+package com.ssaffeine.ssaffeine.user.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

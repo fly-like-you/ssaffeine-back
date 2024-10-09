@@ -1,7 +1,7 @@
 package com.ssaffeine.ssaffeine.order.domain;
 
 import com.ssaffeine.ssaffeine.surveys.domain.Survey;
-import com.ssaffeine.ssaffeine.users.domain.User;
+import com.ssaffeine.ssaffeine.user.domain.User;
 import com.ssaffeine.ssaffeine.drink.domain.Drink;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

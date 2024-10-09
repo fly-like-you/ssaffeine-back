@@ -1,6 +1,6 @@
 package com.ssaffeine.ssaffeine.surveys.domain;
 
-import com.ssaffeine.ssaffeine.users.domain.User;
+import com.ssaffeine.ssaffeine.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
