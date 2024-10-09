@@ -20,7 +20,7 @@ public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer orderId;  // order_id와 매핑
+	private Long orderId;  // order_id와 매핑
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "survey_id", nullable = false)
