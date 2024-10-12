@@ -23,7 +23,7 @@ public class Cafe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cafe_id")
-    private Integer cafeId;
+    private Integer id;
 
     @Column(nullable = false, length = 50)
     private String name;

@@ -19,6 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orderDetail")
 public class OrderDetailController {
 
+    // 사용자는 order가 결제 대기 상태 전까지 "자신"의 order_detail 을 CRUD할 수 있다. 결제 대기 상태가 지나면 조회만 가능하다.
+    // 사용자는 하나의 요일에 하나만 주문을 생성할 수 있다.
+    // 관리자는 사용자가 어떤 주문을 했는지 조회할 수 있다 (survey 별로 조회할 수 있는데 그건 Order 컨트롤러에서 확인가능)
+
+
+
     /**
      * 요일별로 주문을 조회하는 메서드
      * 중요도: 중
@@ -28,7 +34,8 @@ public class OrderDetailController {
      */
     @GetMapping("/byWeekday/{weekday}")
     public List<OrderDetailDto> getOrderDetailsByWeekday(@PathVariable int weekday) {
-        // TODO: 요일에 따른 주문 내역을 조회하는 로직 추가
+        // TODO: 요일에 따른 주문 내역을 조회하는 로직 추가, DTO( 수령 여부, 반, 이름, 옵션)
+
         return null;
     }
 
@@ -40,17 +47,6 @@ public class OrderDetailController {
         return null;
     }
 
-    /**
-     * 게시글에 주문할 수 있는가?
-     * 중요도: 상
-     * 권한: 사용자, 관리자
-     * @return: 현재 게시글에 주문할 수 있으면 True
-     */
-    @GetMapping("/canOrder/{surveyId}")
-    public boolean canOrder(@PathVariable Long surveyId) {
-        // TODO: 현재 게시글의 상태를 확인하여 주문이 가능한지 판단
-        return false;
-    }
 
     /**
      * 특정 주문 조회

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface OrderService {
+    boolean canOrder(Long surveyId);
+
     OrderResponseDto createOrder(OrderRequestDto orderRequestDto);
     OrderResponseDto getOrderById(Long orderId);
 
