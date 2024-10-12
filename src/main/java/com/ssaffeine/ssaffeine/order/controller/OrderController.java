@@ -30,14 +30,37 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+    // orders 는 사용자 자신의 주문만 조회 수정 삭제할 수 있다.
+    // 사용자는 자신의 주문을 각 survey에 한번만 생성가능하다 (악용 방지)
+    // 사용자는 order_status에 접근 불가능하다.
+    // 관리자는 주문의 status 만 변경 시킬 수 있다.
+    // 관리자는 order id 로 조회하거나, 특정 사용자의 id의 모든 order 를 조회할 수 있다.
+    //
+
+    /**
+     * 게시글에 주문할 수 있는가?
+     * 중요도: 상
+     * 권한: 사용자, 관리자
+     * @return: 현재 게시글에 주문할 수 있으면 True
+     */
+    @GetMapping("/canOrder/{surveyId}")
+    public ResponseEntity<Boolean> canOrder(@PathVariable Long surveyId) {
+        // TODO: 현재 게시글의 상태를 확인하여 주문이 가능한지 판단, 사용자 인증 필요
+        boolean canOrder = orderService.canOrder(surveyId);
+
+        return ResponseEntity.ok(canOrder);
+    }
+
     /* ------- CRUD 시작 -------- */
     /**
+     * 주문 생성하기
      * 권한: 모든 사용자 가능
      * @param orderRequestDto
      * @return
      */
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
+
         OrderResponseDto createdOrder = orderService.createOrder(orderRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
@@ -49,9 +72,12 @@ public class OrderController {
      */
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long orderId) {
+        // TODO: 관리자 인증 필요
         OrderResponseDto order = orderService.getOrderById(orderId);
         return ResponseEntity.ok(order);
     }
+
+    // TODO: 사용자 본인의 주문을 확인할 수 있는 메서드, 권한은 사용자
 
     /**
      * 권한: 관리자만 가능
@@ -59,32 +85,43 @@ public class OrderController {
      */
     @GetMapping
     public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
+        // TODO: 관리자 인증 필요
         List<OrderResponseDto> orders = orderService.getAllOrders();
         return ResponseEntity.ok(orders);
     }
 
     /**
-     * 권한: 모든 사용자 가능
+     * 권한: 관리자
+     *
      * @param orderId
      * @param orderRequestDto
      * @return
      */
     @PutMapping("/{orderId}")
-    public ResponseEntity<OrderResponseDto> updateOrder(@PathVariable Long orderId, @RequestBody OrderRequestDto orderRequestDto) {
+    public ResponseEntity<OrderResponseDto> updateOrder(
+            @PathVariable Long orderId,
+            @RequestBody OrderRequestDto orderRequestDto
+    ) {
+        // TODO: 관리자 인증 필요
         OrderResponseDto updatedOrder = orderService.updateOrder(orderId, orderRequestDto);
         return ResponseEntity.ok(updatedOrder);
     }
 
+    // TODO: 사용자 본인의 주문을 수정할 수 있는 메서드, 권한은 사용자, 상태에 따라서 삭제 불가능할 수도
+
     /**
-     * 권한: 모든 사용자 가능
+     * 권한: 관리자
      * @param orderId
      * @return
      */
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
+        // TODO: 관리자 인증 필요
         orderService.deleteOrder(orderId);
         return ResponseEntity.noContent().build();
     }
+
+    // TODO: 사용자 본인의 주문을 삭제할 수 있는 메서드, 권한은 사용자
 
     /* ------- CRUD 종료 -------- */
 
