@@ -1,4 +1,5 @@
-import com.ssaffeine.ssaffeine.drink.domain.Cafe;
+package com.ssaffeine.ssaffeine.drink.domain;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,7 @@ public class Drink {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "drink_id")
     private Long id;
 
     @Column(nullable = false, length = 50)

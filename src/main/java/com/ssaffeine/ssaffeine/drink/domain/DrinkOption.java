@@ -1,6 +1,8 @@
 package com.ssaffeine.ssaffeine.drink.domain;
 
+import com.ssaffeine.ssaffeine.order.domain.OrderDetail;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.*;
 
 @Entity
@@ -21,4 +23,5 @@ public class DrinkOption {
 
     @Column(nullable = false)
     private int price; // 옵션 가격
+
 }
