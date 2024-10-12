@@ -1,50 +1,79 @@
 package com.ssaffeine.ssaffeine.user.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.*;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.time.LocalDateTime;
+import java.util.UUID;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long user_id;  // user_id와 매핑
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@Column(columnDefinition = "BINARY(16)", name = "user_id", updatable = false, nullable = false, unique = true)
+	private UUID userId;
 
-	@Column(nullable = false, length = 50)
-	private String user_name;  // user_name과 매핑
+	@Column(name = "login_id", nullable = false, length = 50)
+	private String loginId;
 
-	@Column(nullable = false, length = 50)
-	private String login_id;  // login_id 매핑, 최대 50자 제한
+	@Column(name = "user_name", nullable = false, length = 50)
+	private String username;
 
-	@Column(nullable = false, length = 50)
-	private String password;  // password와 매핑, 최대 50자 제한
+	@Column(name = "student_number", unique = true, length = 10)
+	private String studentNumber;
 
-	@Column(nullable = false)
-	private Integer role;  // 0: 사용자, 1: 관리자
+	@Column(name = "region")
+	@Enumerated(value = EnumType.STRING)
+	private Region region;
 
-	@Column(nullable = false, updatable = false)
-	private LocalDateTime created_at;  // created_at과 매핑
+	@Column(name = "user_group")
+	private Integer group;
 
-	@Column(nullable = false)
-	private LocalDateTime updated_at;  // updated_at과 매핑
+	@Column(name = "password", nullable = false, length = 60)
+	private String password;
+
+	@Column(name = "role", nullable = false)
+	private UserRole role;
+
+	@Column(name = "created_at", updatable = false)
+	private LocalDateTime createdAt;
+
+	@Column(name = "updated_at")
+	private LocalDateTime updatedAt;
+
+	// 생성자 등 추가로 필요시 Lombok이 자동으로 생성해줍니다
 
 	@PrePersist
 	protected void onCreate() {
-		this.created_at = LocalDateTime.now();
-		this.updated_at = LocalDateTime.now();
+		this.createdAt = LocalDateTime.now();
 	}
 
 	@PreUpdate
 	protected void onUpdate() {
-		this.updated_at = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
 	}
 }
