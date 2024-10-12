@@ -1,4 +1,4 @@
-package com.ssaffeine.ssaffeine.cafe.domain;
+package com.ssaffeine.ssaffeine.drink.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,11 +9,14 @@ import jakarta.persistence.Table;
 import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 @Entity
 @Table(name = "cafes")
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cafe {
@@ -22,13 +25,14 @@ public class Cafe {
     @Column(name = "cafe_id")
     private Integer cafeId;
 
-    @Column(name = "name", length = 50)
-    private String cafeName;
+    @Column(nullable = false, length = 50)
+    private String name;
 
-    @Column(name = "number", length = 20)
+    @Column(length = 20)
     @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "Invalid cafe number format. Expected format: XXX-XXXX-XXXX")
-    private String cafeNumber;
+    private String number;
 
     @Column(name = "address", length = 100)
-    private String address;
+    private String address; // 주소는 필수 아님
+
 }
