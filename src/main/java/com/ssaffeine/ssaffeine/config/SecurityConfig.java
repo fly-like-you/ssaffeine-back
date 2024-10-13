@@ -85,12 +85,12 @@ public class SecurityConfig {
                 .httpBasic((auth) -> auth.disable());
 
         // 경로별로 인가 작업 특정 경로에 대해서 권한을 가져야하는 지 등을 설정
-        http
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("login", "/", "join").permitAll()  // 모든 권한 허용
-                        .requestMatchers("/admin").hasRole("ADMIN")              // admin만 접근가능
-                        .anyRequest().authenticated()                              // 나머지는 로그인한 사용자만 접근 가능
-                );
+//        http
+//                .authorizeHttpRequests((auth) -> auth
+//                        .requestMatchers("/login", "/", "/join", "/swagger-ui").permitAll()  // 모든 권한 허용
+//                        .requestMatchers("/admin").hasRole("ADMIN")              // admin만 접근가능
+////                        .anyRequest().authenticated()                              // 나머지는 로그인한 사용자만 접근 가능
+//                );
 
         http
                 .addFilterBefore(
