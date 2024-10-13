@@ -17,7 +17,7 @@ public class OrderResponseDto {
     private Long surveyId;  // 설문 ID
     private String surveyTitle;  // 설문 제목
     private UUID userId;  // 사용자 ID
-    private String userName;  // 사용자 이름
+    private String username;  // 사용자 이름
     private Long drinkId;  // 음료 ID
     private String drinkName;  // 음료 이름
     private Integer weekday;  // 주문 요일
