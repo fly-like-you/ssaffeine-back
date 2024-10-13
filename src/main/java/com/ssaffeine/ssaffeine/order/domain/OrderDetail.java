@@ -44,7 +44,7 @@ public class OrderDetail {
     @Column(name = "received", nullable = true)
     private LocalDateTime received;
 
-    @OneToMany(mappedBy = "orderDetail", fetch = FetchType.LAZY)
-    private List<DrinkOptionMapping> optionMappings = new ArrayList<>();
+    @OneToMany(mappedBy = "orderDetail", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<DrinkOptionMapping> orderDetail = new ArrayList<>();
 
 }
