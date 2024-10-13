@@ -1,6 +1,7 @@
 package com.ssaffeine.ssaffeine.drink.domain;
 
 
+import com.ssaffeine.ssaffeine.order.domain.OrderDetail;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
