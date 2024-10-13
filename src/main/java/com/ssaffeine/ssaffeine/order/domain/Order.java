@@ -33,7 +33,7 @@ public class Order {
 	private User user;
 
 	@Column(name = "order_status", nullable = false, length = 50)
-	private String orderStatus;
+	private OrderStatus orderStatus;
 
 	@Column(name = "created_at", updatable = false)
 	@Builder.Default

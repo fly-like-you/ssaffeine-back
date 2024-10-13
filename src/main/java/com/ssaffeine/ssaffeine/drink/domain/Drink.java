@@ -1,42 +1,42 @@
 package com.ssaffeine.ssaffeine.drink.domain;
 
-import com.ssaffeine.ssaffeine.cafe.domain.Cafe;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "drinks")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Drink {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "drink_id")
-    private Integer drinkId;
+    private Long id;
+
+    @Column(nullable = false, length = 50)
+    private String name;
+
+    @Column(nullable = false)
+    private int price;
+
+    @Column(nullable = true)
+    private Integer kcals; // 칼로리는 nullable 허용
+
+    @Column(nullable = true)
+    private Integer caffeineContent; // 카페인 함량도 nullable
+
+    @Column(length = 100)
+    private String features; // 음료 특징
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category; // 음료 카테고리
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cafe_id", nullable = false)
-    private Cafe cafe;
-
-    @Column(name = "name", length = 50)
-    private String name;
-
-    @Column(name = "price")
-    private Integer price;
-
-    @OneToMany(mappedBy = "drink", fetch = FetchType.LAZY)
-    private Set<DrinkOption> options;
+    private Cafe cafe; // 음료가 속한 카페
 }

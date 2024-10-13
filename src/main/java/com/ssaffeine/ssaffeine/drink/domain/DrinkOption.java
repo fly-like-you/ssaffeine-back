@@ -1,34 +1,27 @@
 package com.ssaffeine.ssaffeine.drink.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.ssaffeine.ssaffeine.order.domain.OrderDetail;
+import jakarta.persistence.*;
+import java.util.List;
+import lombok.*;
 
 @Entity
 @Table(name = "drink_options")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class DrinkOption {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mapping_id")
-    private Integer mappingId;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drink_id", nullable = false)
-    private Drink drink;
+    @Column(nullable = false, length = 50)
+    private String name; // 옵션 이름 (예: 샷 추가, 시럽 추가)
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "option_id", nullable = false)
-    private Option option;
+    @Column(nullable = false)
+    private int price; // 옵션 가격
+
 }

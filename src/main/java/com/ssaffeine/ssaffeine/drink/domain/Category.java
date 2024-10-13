@@ -1,35 +1,31 @@
 package com.ssaffeine.ssaffeine.drink.domain;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.Set;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "drink_options")
-@Data
+@Table(name = "categories")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Option {
+@Builder
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "option_id")
-    private Integer optionId;
+    @Column(name = "category_id")
+    private Long id;
 
-    @Column(name = "name", length = 50)
+    @Column(nullable = false, length = 10)
     private String name;
-
-    @Column(name = "price")
-    private Integer price;
-
-    @OneToMany(mappedBy = "option", fetch = FetchType.LAZY)
-    private Set<DrinkOption> drinks;
 }

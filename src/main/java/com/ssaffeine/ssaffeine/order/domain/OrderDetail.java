@@ -1,7 +1,10 @@
 package com.ssaffeine.ssaffeine.order.domain;
 
 import com.ssaffeine.ssaffeine.drink.domain.Drink;
+import com.ssaffeine.ssaffeine.drink.domain.DrinkOptionMapping;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -17,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDetails {
+public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +41,10 @@ public class OrderDetails {
     @Column(name = "weekday", nullable = false)
     private Integer weekday;
 
-    @Column(name = "received")
+    @Column(name = "received", nullable = true)
     private LocalDateTime received;
+
+    @OneToMany(mappedBy = "orderDetail", fetch = FetchType.LAZY)
+    private List<DrinkOptionMapping> optionMappings = new ArrayList<>();
+
 }
