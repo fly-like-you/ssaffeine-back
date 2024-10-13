@@ -56,10 +56,10 @@ public class OrderServiceImpl implements OrderService {
         Order savedOrder = orderRepository.save(order);
         OrderResponseDto responseDto = new OrderResponseDto();
         responseDto.setOrderId(savedOrder.getOrderId());
-        responseDto.setSurveyId(survey.getSurvey_id());
+        responseDto.setSurveyId(survey.getSurveyId());
         responseDto.setSurveyTitle(survey.getTitle()); // 설문 제목
         responseDto.setUserId(user.getUserId());
-        responseDto.setUserName(user.getUsername()); // 사용자 이름
+        responseDto.setUsername(user.getUsername()); // 사용자 이름
         responseDto.setDrinkId(orderRequestDto.getDrinkId()); // 주문한 음료 ID
         responseDto.setDrinkName(drink.getName()); // 주문한 음료 이름
         responseDto.setQuantity(orderRequestDto.getQuantity()); // 주문 수량

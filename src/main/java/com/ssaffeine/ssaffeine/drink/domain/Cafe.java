@@ -23,12 +23,12 @@ public class Cafe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cafe_id")
-    private Integer id;
+    private Integer cafeId;
 
-    @Column(nullable = false, length = 50)
+    @Column(name="name", nullable = false, length = 50)
     private String name;
 
-    @Column(length = 20)
+    @Column(name="number", length = 20)
     @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "Invalid cafe number format. Expected format: XXX-XXXX-XXXX")
     private String number;
 

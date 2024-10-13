@@ -27,10 +27,10 @@ public class DrinkOptionMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long drinkOptionMappingId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drink_option_id", nullable = false)
+    @JoinColumn(name = "option_id", nullable = false)
     private DrinkOption drinkOption; // 음료 옵션
 
     @ManyToOne(fetch = FetchType.LAZY)

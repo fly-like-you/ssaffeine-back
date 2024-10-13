@@ -17,32 +17,42 @@ import java.time.LocalDateTime;
 public class Survey {
 
 	@Id
+	@Column(name="survey_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long survey_id;  // survey_id와 매핑
+	private Long surveyId;  // survey_id와 매핑
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;  // users 테이블과 연관 관계 (N:1)
 
-	@Column(nullable = false)
+	@Column(name="title", nullable = false)
 	private String title;  // 게시글 제목
 
-	@Column(nullable = false, columnDefinition = "TEXT")
+	@Column(name="content", nullable = false, columnDefinition = "TEXT")
 	private String content;  // 게시글 내용
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private SurveyStatus survey_status;  // 설문 상태 (enum: 설문 진행, 입금 대기, 결제 중, 입금 마감, 설문 마감)
+	@Column(name="survey_status", nullable = false)
+	private SurveyStatus surveyStatus;  // 설문 상태 (enum: 설문 진행, 입금 대기, 결제 중, 입금 마감, 설문 마감)
 
-	@Column(nullable = false)
+	@Column(name="goal", nullable = false)
 	private Integer goal;  // 모집 인원 달성 여부
 
-	@Column(nullable = false, updatable = false)
-	private LocalDateTime created_at;  // 작성일
+	@Column(name="created_at", nullable = false, updatable = false)
+	private LocalDateTime createdAt;  // 작성일
+
+	@Column(name="updated_at", nullable = false, updatable = false)
+	private LocalDateTime updatedAt;  // 수정일
 
 	@PrePersist
 	protected void onCreate() {
-		this.created_at = LocalDateTime.now();
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	@PreUpdate
+	public void preUpdate() {
+		this.updatedAt = LocalDateTime.now();
 	}
 }
 

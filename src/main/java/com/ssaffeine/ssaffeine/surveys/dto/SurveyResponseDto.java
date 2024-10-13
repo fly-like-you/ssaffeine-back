@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class SurveyResponseDto {
     private Long surveyId;  // 설문 ID
     private UUID userId;  // 설문을 작성한 사용자 ID
-    private String userName;  // 작성자 이름
+    private String username;  // 작성자 이름
     private String title;  // 게시글 제목
     private String content;  // 게시글 내용
     private SurveyStatus surveyStatus;  // 설문 상태

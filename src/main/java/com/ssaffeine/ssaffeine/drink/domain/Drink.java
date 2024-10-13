@@ -15,21 +15,21 @@ public class Drink {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "drink_id")
-    private Long id;
+    private Long drinkId;
 
-    @Column(nullable = false, length = 50)
+    @Column(name="name", nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name="price", nullable = false)
     private int price;
 
-    @Column(nullable = true)
+    @Column(name="kcals", nullable = true)
     private Integer kcals; // 칼로리는 nullable 허용
 
-    @Column(nullable = true)
+    @Column(name="caffeine_content", nullable = true)
     private Integer caffeineContent; // 카페인 함량도 nullable
 
-    @Column(length = 100)
+    @Column(name="feature", length = 100)
     private String features; // 음료 특징
 
     @ManyToOne(fetch = FetchType.LAZY)

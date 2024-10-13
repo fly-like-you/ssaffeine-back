@@ -49,7 +49,7 @@ public class OrderServiceImplTest {
 
 		// Sample data for testing
 		survey = new Survey();
-		survey.setSurvey_id(1L);
+		survey.setSurveyId(1L);
 		survey.setTitle("Sample Survey");
 
 		user = new User();
@@ -57,7 +57,7 @@ public class OrderServiceImplTest {
 		user.setUsername("User Name");
 
 		drink = new Drink();
-		drink.setId(1L);
+		drink.setDrinkId(1L);
 		drink.setName("Sample Drink");
 	}
 
@@ -86,11 +86,11 @@ public class OrderServiceImplTest {
 
 		// Then
 		assertEquals(savedOrder.getOrderId(), responseDto.getOrderId());
-		assertEquals(survey.getSurvey_id(), responseDto.getSurveyId());
+		assertEquals(survey.getSurveyId(), responseDto.getSurveyId());
 		assertEquals(survey.getTitle(), responseDto.getSurveyTitle());
 		assertEquals(user.getUserId(), responseDto.getUserId()); // UUID를 문자열로 변환하여 비교
-		assertEquals(user.getUsername(), responseDto.getUserName());
-		assertEquals(drink.getId(), responseDto.getDrinkId());
+		assertEquals(user.getUsername(), responseDto.getUsername());
+		assertEquals(drink.getDrinkId(), responseDto.getDrinkId());
 		assertEquals(drink.getName(), responseDto.getDrinkName());
 		assertEquals(orderRequestDto.getQuantity(), responseDto.getQuantity());
 		assertEquals(OrderStatus.ORDER_PENDING, responseDto.getOrderStatus());

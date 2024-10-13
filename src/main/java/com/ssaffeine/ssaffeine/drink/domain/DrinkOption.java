@@ -16,12 +16,13 @@ public class DrinkOption {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name="option_id")
+    private Long drinkOptionId;
 
-    @Column(nullable = false, length = 50)
+    @Column(name="name", nullable = false, length = 50)
     private String name; // 옵션 이름 (예: 샷 추가, 시럽 추가)
 
-    @Column(nullable = false)
+    @Column(name="price", nullable = false)
     private int price; // 옵션 가격
 
 }

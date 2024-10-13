@@ -40,7 +40,7 @@ public class User {
 	@Column(name = "login_id", nullable = false, length = 50)
 	private String loginId;
 
-	@Column(name = "user_name", nullable = false, length = 50)
+	@Column(name = "username", nullable = false, length = 50)
 	private String username;
 
 	@Column(name = "student_number", unique = true, length = 10)
@@ -56,7 +56,7 @@ public class User {
 	@Column(name = "password", nullable = false, length = 60)
 	private String password;
 
-	@Column(name = "role", nullable = false)
+	@Column(name = "user_role", nullable = false)
 	private UserRole role;
 
 	@Column(name = "created_at", updatable = false)
@@ -70,6 +70,7 @@ public class User {
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
 	}
 
 	@PreUpdate

@@ -43,6 +43,12 @@ public class Order {
 	@Builder.Default
 	private LocalDateTime updatedAt = LocalDateTime.now();
 
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
 	@PreUpdate
 	public void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
