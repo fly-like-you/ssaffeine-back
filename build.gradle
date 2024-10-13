@@ -47,3 +47,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+tasks.bootJar {
+	mainClass.set("com.ssaffeine.ssaffeine.SsaffeineApplication")
+	archiveFileName.set("ssaffeineProject.jar")
+}
+

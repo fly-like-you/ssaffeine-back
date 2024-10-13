@@ -357,4 +357,3 @@ gradle-app.setting
 /src/main/generated
 /src/main/resources/application.yml
 /src/main/resources/application.properties
-/gradle/wrapper/gradle-wrapper.jar
