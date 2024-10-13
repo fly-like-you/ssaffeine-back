@@ -2,6 +2,7 @@ package com.ssaffeine.ssaffeine.order.dto;
 
 import com.ssaffeine.ssaffeine.order.domain.OrderStatus;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ public class OrderResponseDto {
     private Long orderId;  // 주문 ID
     private Long surveyId;  // 설문 ID
     private String surveyTitle;  // 설문 제목
-    private Long userId;  // 사용자 ID
+    private UUID userId;  // 사용자 ID
     private String userName;  // 사용자 이름
     private Long drinkId;  // 음료 ID
     private String drinkName;  // 음료 이름

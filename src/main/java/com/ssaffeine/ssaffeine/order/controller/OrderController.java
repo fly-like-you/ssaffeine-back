@@ -100,10 +100,19 @@ public class OrderController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
-        // TODO: 관리자 인증 필요
-        List<OrderResponseDto> orders = orderService.getAllOrders();
-        return ResponseEntity.ok(orders);
+    public ResponseEntity<List<OrderResponseDto>> getAllOrders(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        log.info("userDetails={}", userDetails);
+
+        UserRole userRole = userDetails.getUserRole();
+        if(UserRole.ROLE_ADMIN.equals(userRole)) {
+            List<OrderResponseDto> orders = orderService.getAllOrders();
+            return ResponseEntity.ok(orders);
+        }
+	    else {
+            return ResponseEntity.status(401).build();
+        }
     }
 
     /**
@@ -115,26 +124,45 @@ public class OrderController {
      */
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderResponseDto> updateOrder(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long orderId,
             @RequestBody OrderRequestDto orderRequestDto
     ) {
         // TODO: 관리자 인증 필요
-        OrderResponseDto updatedOrder = orderService.updateOrder(orderId, orderRequestDto);
-        return ResponseEntity.ok(updatedOrder);
+        log.info("userDetails={}", userDetails);
+
+        UserRole userRole = userDetails.getUserRole();
+        if(UserRole.ROLE_ADMIN.equals(userRole)) {
+            OrderResponseDto updatedOrder = orderService.updateOrder(orderId, orderRequestDto);
+            return ResponseEntity.ok(updatedOrder);
+        }
+        else {
+            return ResponseEntity.status(401).build();
+            }
     }
 
     // TODO: 사용자 본인의 주문을 수정할 수 있는 메서드, 권한은 사용자, 상태에 따라서 삭제 불가능할 수도
-
     /**
      * 권한: 관리자
      * @param orderId
      * @return
      */
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
-        // TODO: 관리자 인증 필요
-        orderService.deleteOrder(orderId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteOrder(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long orderId) {
+
+        log.info("userDetails={}", userDetails);
+
+        UserRole userRole = userDetails.getUserRole();
+        if(UserRole.ROLE_ADMIN.equals(userRole)) {
+            // TODO: 관리자 인증 필요
+            orderService.deleteOrder(orderId);
+            return ResponseEntity.noContent().build();
+        }
+        else {
+            return ResponseEntity.status(401).build();
+        }
     }
 
     // TODO: 사용자 본인의 주문을 삭제할 수 있는 메서드, 권한은 사용자
