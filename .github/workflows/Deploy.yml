@@ -1,0 +1,45 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    # 기본 체크아웃
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    # Gradlew 실행 허용
+    - name: Run chmod to make gradlew executable
+      run: chmod +x ./gradlew
+
+    # JDK 21 세팅 (SpringBoot 3.2.x와 Java 21 호환)
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    # 환경 변수 설정 (GitHub Secrets를 이용해 env.properties 파일 생성)
+    - name: Create env.properties from Secrets
+      run: |
+        cd ./src/main/resources
+        touch ./env.properties
+        echo "KEY=${{ secrets.ENV }}" > ./env.properties
+      shell: bash
+    
+    # Gradle build (Test 제외)
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: clean build -x test
