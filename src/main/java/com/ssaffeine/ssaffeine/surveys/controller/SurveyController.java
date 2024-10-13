@@ -34,7 +34,10 @@ public class SurveyController {
     }
 
     /* ------- CRUD 시작 -------- */
+    // 이번주 달성률 조회 -> 날자만 있으면 댐
+    // 만약에 없으면 자동으로 만들기
 
+    // survey id요청하는거 마감?
     /**
      * 권한: 관리자만 가능
      * @param surveyRequestDto
