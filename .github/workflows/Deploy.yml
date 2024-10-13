@@ -1,4 +1,4 @@
-name: Deploy
+name: CI/CD Pipeline
 
 on:
   push:
@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -43,15 +42,24 @@ jobs:
       uses: gradle/gradle-build-action@v2
       with:
         arguments: clean build -x test
-    # Gradle build (Test 제외)
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: clean build -x test
+
     # Docker build
     - name: Docker build
       run: |
         docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
         docker build -t ssaffeine_docker_hub .
-        docker tag ssaffeine_docker_hub wnsgh712/ssaffeine_docker_hub:${GITHUB_SHA::7}
-        docker push wnsgh712/ssaffeine_docker_hub:${GITHUB_SHA::7}
+        docker tag ssaffeine_docker_hub wnsgh712/ssaffeine_docker_hub:${{ github.sha::7 }}
+        docker push wnsgh712/ssaffeine_docker_hub:${{ github.sha::7 }}
+
+    # Deploy
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: 35.216.108.230
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${{ github.sha::7 }}
+          sudo docker tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${{ github.sha::7 }} 이미지이름
+          sudo docker-compose up -d
