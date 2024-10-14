@@ -2,18 +2,10 @@ package com.ssaffeine.ssaffeine.order.controller;
 
 
 import com.ssaffeine.ssaffeine.order.dto.OrderDetailDto;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/orderDetail")
@@ -34,8 +26,8 @@ public class OrderDetailController {
      */
     @GetMapping("/byWeekday/{weekday}")
     public List<OrderDetailDto> getOrderDetailsByWeekday(@PathVariable int weekday) {
-        // TODO: 요일에 따른 주문 내역을 조회하는 로직 추가, DTO( 수령 여부, 반, 이름, 옵션)
 
+        // TODO: 요일에 따른 주문 내역을 조회하는 로직 추가, DTO( 수령 여부, 반, 이름, 옵션)
         return null;
     }
 

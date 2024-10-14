@@ -19,8 +19,8 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("CodeArena Swagger")
-                .description("CodeArena 유저 및 인증 , ps, 알림에 관한 REST API")
+                .title("싸페인 API 문서")
+                .description("주문, 설문, 유저에 관한 API를 설명하는 문서입니다.")
                 .version("1.0.0");
     }
 }
