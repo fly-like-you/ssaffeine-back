@@ -114,6 +114,7 @@ public interface SurveyControllerDocs {
                     content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = @Content(mediaType = "application/json"))
+            //
     })
     @DeleteMapping("/{surveyId}")
     ResponseEntity<Void> deleteSurvey(

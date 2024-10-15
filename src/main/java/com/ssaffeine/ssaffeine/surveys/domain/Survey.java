@@ -1,12 +1,16 @@
 package com.ssaffeine.ssaffeine.surveys.domain;
 
+import com.ssaffeine.ssaffeine.order.domain.Order;
 import com.ssaffeine.ssaffeine.user.domain.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "surveys")
@@ -41,8 +45,11 @@ public class Survey {
 	@Column(name="created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;  // 작성일
 
-	@Column(name="updated_at", nullable = false, updatable = false)
+	@Column(name="updated_at", nullable = false)
 	private LocalDateTime updatedAt;  // 수정일
+
+	@OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Order> orders = new ArrayList<>();
 
 	@PrePersist
 	protected void onCreate() {
