@@ -2,13 +2,14 @@ package com.ssaffeine.ssaffeine.surveys.service;
 
 import com.ssaffeine.ssaffeine.exception.ResourceNotFoundException;
 import com.ssaffeine.ssaffeine.order.domain.Order;
-import com.ssaffeine.ssaffeine.order.dto.OrderListDto;
+import com.ssaffeine.ssaffeine.order.dto.OrderListResponseDto;
 import com.ssaffeine.ssaffeine.order.dto.OrderResponseDto;
 import com.ssaffeine.ssaffeine.order.service.OrderService;
 import com.ssaffeine.ssaffeine.surveys.domain.Survey;
-import com.ssaffeine.ssaffeine.surveys.dto.SurveyRequestDto;
-import com.ssaffeine.ssaffeine.surveys.dto.SurveyResponseDto;
+import com.ssaffeine.ssaffeine.surveys.dto.request.SurveyRequestDto;
+import com.ssaffeine.ssaffeine.surveys.dto.response.SurveyResponseDto;
 import com.ssaffeine.ssaffeine.surveys.repository.SurveyRepository;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +37,10 @@ public class SurveyServiceImpl implements SurveyService{
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new ResourceNotFoundException("Survey not found: " + surveyId));
 
-        SurveyResponseDto surveyResponseDto =  SurveyResponseDto.builder()
-                .surveyId(surveyId)
-                .
-        return null;
+        // Order 엔티티 리스트를 OrderResponseDto 리스트로 변환
+        return toDto(survey);
     }
+
 
     @Override
     public SurveyResponseDto updateSurvey(Long surveyId, SurveyRequestDto surveyRequestDto) {
@@ -53,27 +53,30 @@ public class SurveyServiceImpl implements SurveyService{
     }
 
     public SurveyResponseDto toDto(Survey survey) {
-        return null;
-//        return SurveyResponseDto.builder()
-//                .surveyId(survey.getSurveyId())
-//                .title(survey.getTitle())
-//                .content(survey.getContent())
-//                .username(survey.getUser().getUsername())
-//                .goal(survey.getGoal())
-//                .surveyStatus(survey.getSurveyStatus())
-//                .orderList(survey.getOrders())
-//                .build();
+        OrderListResponseDto orderList = toDto(survey.getOrders());
 
+        return SurveyResponseDto.builder()
+                .surveyId(survey.getSurveyId())
+                .title(survey.getTitle())
+                .content(survey.getContent())
+                .username(survey.getUser().getUsername())
+                .goal(survey.getGoal())
+                .surveyStatus(survey.getSurveyStatus())
+                .orderList(orderList)
+                .build();
     }
 
-    public OrderListDto toDto(List<Order> orderList) {
-        List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
-        for (Order order : orderList) {
-            new OrderResponseDto()
-            orderResponseDtoList.add(Order)
-        }
-        return OrderListDto.builder()
-                .orders(orderList)
-                .build();
+    public OrderListResponseDto toDto(List<Order> orderList) {
+        return new OrderListResponseDto(
+                orderList.stream()
+                .map(order -> OrderResponseDto.builder()
+                        .orderId(order.getOrderId())
+                        .userId(order.getUser().getUserId())
+                        .orderStatus(order.getOrderStatus())
+                        .createdAt(order.getCreatedAt())
+                        .updatedAt(order.getUpdatedAt())
+                        .build()
+                ).toList()
+        );
     }
 }

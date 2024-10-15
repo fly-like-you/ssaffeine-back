@@ -1,4 +1,4 @@
-package com.ssaffeine.ssaffeine.surveys.dto;
+package com.ssaffeine.ssaffeine.surveys.dto.request;
 
 import com.ssaffeine.ssaffeine.surveys.domain.SurveyStatus;
 import java.util.UUID;

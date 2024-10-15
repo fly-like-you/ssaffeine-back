@@ -1,7 +1,7 @@
 package com.ssaffeine.ssaffeine.surveys.service;
 
-import com.ssaffeine.ssaffeine.surveys.dto.SurveyRequestDto;
-import com.ssaffeine.ssaffeine.surveys.dto.SurveyResponseDto;
+import com.ssaffeine.ssaffeine.surveys.dto.request.SurveyRequestDto;
+import com.ssaffeine.ssaffeine.surveys.dto.response.SurveyResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service

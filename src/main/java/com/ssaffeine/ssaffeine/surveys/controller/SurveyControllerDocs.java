@@ -1,7 +1,7 @@
 package com.ssaffeine.ssaffeine.surveys.controller;
 
-import com.ssaffeine.ssaffeine.surveys.dto.SurveyRequestDto;
-import com.ssaffeine.ssaffeine.surveys.dto.SurveyResponseDto;
+import com.ssaffeine.ssaffeine.surveys.dto.request.SurveyRequestDto;
+import com.ssaffeine.ssaffeine.surveys.dto.response.SurveyResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -40,10 +40,6 @@ public interface SurveyControllerDocs {
             @ApiResponse(responseCode = "201", description = "게시글이 성공적으로 작성되었습니다.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = SurveyResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 요청 (유저 정보, 본문, 제목 등)",
-                    content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "401", description = "설문을 삭제할 권한이 없음",
-                    content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = @Content(mediaType = "application/json"))
     })
     @PostMapping
@@ -52,17 +48,17 @@ public interface SurveyControllerDocs {
             @RequestBody SurveyRequestDto surveyRequestDto);
 
     /**
-     * 특정 설문 조회
+     * 특정 게시글 조회
      *
      * 권한: 관리자, 사용자
-     * @param surveyId 조회하려는 설문의 ID
-     * @return 설문 세부 정보
+     * @param surveyId 조회하려는 게시글의 ID
+     * @return 게시글의 세부 정보
      */
-    @Operation(summary = "특정 설문 조회", description = "관리자 또는 사용자가 특정 ID의 설문을 조회합니다.")
+    @Operation(summary = "특정 게시글 조회", description = "관리자 또는 사용자가 특정 ID의 게시글을 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "설문 조회 성공",
+            @ApiResponse(responseCode = "200", description = "게시글 조회 성공",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = SurveyResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "설문을 찾을 수 없음",
+            @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음",
                     content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = @Content(mediaType = "application/json"))
@@ -80,15 +76,13 @@ public interface SurveyControllerDocs {
      * @param surveyRequestDto 수정할 게시글의 제목, 내용 등 정보
      * @return 수정된 게시글 정보
      */
-    @Operation(summary = "설문 수정", description = "관리자가 특정 설문의 내용을 수정합니다.")
+    @Operation(summary = "게시글 수정", description = "관리자가 특정 게시글의 내용을 수정합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "설문 수정 성공",
+            @ApiResponse(responseCode = "200", description = "게시글 수정 성공",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = SurveyResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음",
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "유효하지 않은 요청 데이터",
-                    content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "401", description = "설문을 삭제할 권한이 없음",
-                    content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "404", description = "설문을 찾을 수 없음",
                     content = @Content(mediaType = "application/json"))
     })
     @PutMapping("/{surveyId}")
@@ -105,19 +99,16 @@ public interface SurveyControllerDocs {
      * @param surveyId 삭제하려는 게시글의 ID
      * @return 응답 없음 (204 No Content)
      */
-    @Operation(summary = "설문 삭제", description = "관리자가 특정 설문을 삭제합니다.")
+    @Operation(summary = "게시글 삭제", description = "관리자가 특정 게시글을 삭제합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "설문 삭제 성공"),
-            @ApiResponse(responseCode = "401", description = "설문을 삭제할 권한이 없음",
-                    content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "404", description = "설문을 찾을 수 없음",
+            @ApiResponse(responseCode = "204", description = "게시글 삭제 성공"),
+            @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음",
                     content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "서버 에러",
                     content = @Content(mediaType = "application/json"))
-            //
     })
     @DeleteMapping("/{surveyId}")
     ResponseEntity<Void> deleteSurvey(
-            @Parameter(description = "삭제할 설문의 ID", required = true, example = "1")
+            @Parameter(description = "삭제할 게시글의 ID", required = true, example = "1")
             @PathVariable Long surveyId);
 }

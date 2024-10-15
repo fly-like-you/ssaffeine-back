@@ -1,6 +1,6 @@
-package com.ssaffeine.ssaffeine.surveys.dto;
+package com.ssaffeine.ssaffeine.surveys.dto.response;
 
-import com.ssaffeine.ssaffeine.order.dto.OrderListDto;
+import com.ssaffeine.ssaffeine.order.dto.OrderListResponseDto;
 import com.ssaffeine.ssaffeine.surveys.domain.SurveyStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +23,6 @@ public class SurveyResponseDto {
     private String content;  // 게시글 내용
     private SurveyStatus surveyStatus;  // 설문 상태
     private Integer goal;  // 목표 인원
-    private OrderListDto orderList;
+    private OrderListResponseDto orderList;
     private LocalDateTime createdAt;  // 작성일
 }
