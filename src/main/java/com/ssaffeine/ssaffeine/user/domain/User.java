@@ -65,8 +65,6 @@ public class User {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
-	// 생성자 등 추가로 필요시 Lombok이 자동으로 생성해줍니다
-
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = LocalDateTime.now();

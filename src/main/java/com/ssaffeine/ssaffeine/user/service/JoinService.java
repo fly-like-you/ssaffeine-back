@@ -16,7 +16,6 @@ public class JoinService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
-
     public JoinService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -28,7 +27,7 @@ public class JoinService {
         String loginId = joinDTO.getLoginId();
 
         // 사용자 이름 중복 체크
-        Boolean exists = userRepository.existsByLoginId(username);
+        Boolean exists = userRepository.existsByLoginId(password);
         if (exists) {
             throw new IllegalArgumentException("이미 존재하는 사용자입니다.");
         }
