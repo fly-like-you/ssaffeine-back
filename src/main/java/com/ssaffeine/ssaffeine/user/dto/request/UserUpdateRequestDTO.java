@@ -8,23 +8,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import javax.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-// 200
-// 2001
+
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-
-public class UserRequestDto {
-
-    @Schema(description = "사용자의 로그인 ID", example = "user123")
-    @NotBlank(message = "로그인 ID는 필수 항목입니다.")
-    @Size(min = 5, max = 50, message = "로그인 ID는 5자 이상, 50자 이하여야 합니다.")
-    private String loginId;
+public class UserUpdateRequestDTO {
 
     @Schema(description = "사용자의 한국어 이름", example = "홍길동")
     @NotBlank(message = "이름은 필수 항목입니다.")
@@ -46,10 +35,16 @@ public class UserRequestDto {
     @Min(value = 0, message = "반 번호는 0 이상의 정수여야 합니다.")
     private Integer group;
 
+    // 비밀번호 수정은 선택적이므로 null일 수 있음
     @Schema(description = "사용자의 비밀 번호", example = "password1234")
     @NotBlank(message = "비밀번호는 필수 항목입니다.")
-    @Size(min = 8, message = "비밀번호는 최소 8자 이상이어야 합니다.")
+    @Size(min = 8, max = 60, message = "비밀번호는 최소 8자 이상이어야 합니다.")
+
     private String password;
 
-    // Getters and Setters
+    @Schema(description = "변경할 사용자의 비밀 번호", example = "changedPW1234")
+    @Size(min = 8, max = 60, message = "비밀번호는 최소 8자 이상이어야 합니다.")
+    private String changedPassword;
+
+    // 수정 시 모든 필드가 선택적이므로 유효성 검증을 일부 필드에만 적용 가능
 }

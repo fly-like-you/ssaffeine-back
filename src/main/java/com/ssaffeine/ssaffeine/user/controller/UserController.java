@@ -1,27 +1,34 @@
 package com.ssaffeine.ssaffeine.user.controller;
 
+import com.ssaffeine.ssaffeine.exception.UserException;
+import com.ssaffeine.ssaffeine.exception.errorcode.ErrorCode;
 import com.ssaffeine.ssaffeine.user.controller.docs.UserControllerDocs;
+import com.ssaffeine.ssaffeine.user.domain.UserRole;
+import com.ssaffeine.ssaffeine.user.dto.CustomUserDetails;
 import com.ssaffeine.ssaffeine.user.dto.request.UserRequestDto;
+import com.ssaffeine.ssaffeine.user.dto.request.UserUpdateRequestDTO;
 import com.ssaffeine.ssaffeine.user.dto.response.UserResponseDto;
 import com.ssaffeine.ssaffeine.user.service.UserService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
-    /*
-    const user = {
-          region: '부울경', 숫자로 지금 받게 하고 있음 -> 글자로
-          group: 4,
-          name: '권선',
-          role: 'ROLE_ADMIN',
-          // uuid나 학번 추가
-          accessToken: 'someAccessToken', // Add this line
-        };
-     */
 
+@Slf4j
 @RestController
+@RequestMapping("/api/users")
 public class UserController implements UserControllerDocs {
     private final UserService userService;
 
@@ -31,22 +38,42 @@ public class UserController implements UserControllerDocs {
     }
 
     @Override
-    public ResponseEntity<UserResponseDto> signUp(UserRequestDto userRequestDto) {
+    @PostMapping("/signup")
+    public ResponseEntity<UserResponseDto> signUp(@Valid @RequestBody UserRequestDto userRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUp(userRequestDto));
     }
 
     @Override
-    public ResponseEntity<UserResponseDto> getUserById(UUID userId) {
-        return null;
+    @GetMapping("/{userId}")
+
+    public ResponseEntity<UserResponseDto> getUserById(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable UUID userId
+    ) {
+        if (customUserDetails.getUserRole() == UserRole.ROLE_USER) {
+            throw new UserException(HttpStatus.UNAUTHORIZED, ErrorCode.USER_ACCESS_DENIED, "권한 부족");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(userId));
     }
 
     @Override
-    public ResponseEntity<UserResponseDto> updateUser(UUID userId, UserRequestDto userRequestDto) {
-        return null;
+    @PutMapping
+    public ResponseEntity<UserResponseDto> updateUser(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @Valid @RequestBody UserUpdateRequestDTO userRequestDto) {
+
+        UUID userId = UUID.fromString(customUserDetails.getUserId());
+        log.info("user id: {}", userId);
+        log.info("requestDto={}", userRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, userRequestDto));
     }
 
     @Override
-    public ResponseEntity<Void> deleteUser(UUID userId) {
-        return null;
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        UUID userId = UUID.fromString(customUserDetails.getUserId());
+        userService.deleteUser(userId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }

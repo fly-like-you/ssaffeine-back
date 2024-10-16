@@ -48,9 +48,9 @@ public class JWTUtil {
                 .get("loginId", String.class);
     }
 
-    public Integer getSemester(String token) {
-        return Integer.parseInt(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-                .get("semester", String.class));
+    public String getSemester(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+                .get("semester", String.class);
     }
 
     public Region getRegion(String token) {
@@ -74,7 +74,7 @@ public class JWTUtil {
         String loginId = customUserDetails.getLoginId();
         String username = customUserDetails.getUsername();
         String userId = customUserDetails.getUserId();
-        Integer semester = customUserDetails.getSemester();
+        String semester = String.valueOf(customUserDetails.getSemester());
         String region = customUserDetails.getRegion().toString();
         String group = customUserDetails.getGroup() + "";
 

@@ -1,5 +1,6 @@
 package com.ssaffeine.ssaffeine.surveys.dto;
 
+import com.ssaffeine.ssaffeine.order.dto.OrderListResponseDto;
 import com.ssaffeine.ssaffeine.surveys.domain.SurveyStatus;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,5 +22,7 @@ public class SurveyResponseDto {
     private String content;  // 게시글 내용
     private SurveyStatus surveyStatus;  // 설문 상태
     private Integer goal;  // 목표 인원
+    private OrderListResponseDto orderList;
+
     private LocalDateTime createdAt;  // 작성일
 }
