@@ -4,11 +4,12 @@ import com.ssaffeine.ssaffeine.user.controller.docs.UserControllerDocs;
 import com.ssaffeine.ssaffeine.user.dto.request.UserRequestDto;
 import com.ssaffeine.ssaffeine.user.dto.response.UserResponseDto;
 import com.ssaffeine.ssaffeine.user.service.UserService;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
     /*
     const user = {
           region: '부울경', 숫자로 지금 받게 하고 있음 -> 글자로
@@ -31,7 +32,7 @@ public class UserController implements UserControllerDocs {
 
     @Override
     public ResponseEntity<UserResponseDto> signUp(UserRequestDto userRequestDto) {
-        return ResponseEntity.ok().body(userService.signUp(userRequestDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUp(userRequestDto));
     }
 
     @Override

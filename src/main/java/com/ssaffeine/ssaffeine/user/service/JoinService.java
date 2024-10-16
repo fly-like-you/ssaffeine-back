@@ -8,7 +8,6 @@ import com.ssaffeine.ssaffeine.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 @Slf4j
 @Service
@@ -36,7 +35,7 @@ public class JoinService {
         User user = new User();
         user.setLoginId(loginId);
         user.setUsername(username);
-        user.setStudentNumber(joinDTO.getStudentNumber());
+        user.setSemester(joinDTO.getSemester());
         user.setRegion(joinDTO.getRegion());  // 지역 설정 (Region Enum or String)
         user.setGroup(joinDTO.getGroup());  // 반 설정
         user.setPassword(bCryptPasswordEncoder.encode(password));  // 비밀번호 해싱

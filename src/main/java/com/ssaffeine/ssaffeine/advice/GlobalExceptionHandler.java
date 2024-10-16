@@ -1,9 +1,8 @@
 package com.ssaffeine.ssaffeine.advice;
 
 import com.ssaffeine.ssaffeine.exception.ResourceNotFoundException;
-import com.ssaffeine.ssaffeine.exception.UserNotFoundException;
-import com.ssaffeine.ssaffeine.exception.UserRequestValidationFailException;
-import org.springframework.beans.factory.parsing.Problem;
+import com.ssaffeine.ssaffeine.exception.UserException;
+import com.ssaffeine.ssaffeine.exception.errorcode.UserErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,18 +27,13 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-    @ExceptionHandler(UserRequestValidationFailException.class)
-    public ProblemDetail handleValidationNotAppropriate(UserRequestValidationFailException e) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getReason());
+    @ExceptionHandler(UserException.class)
+    public CustomProblemDetail<UserErrorCode> handleValidationNotAppropriate(UserException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(e.getStatusCode(), e.getMessage());
         problemDetail.setTitle("사용자 요청 오류");
-        return problemDetail;
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ProblemDetail handleUserNotFound(UserNotFoundException e) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getReason());
-        problemDetail.setTitle("UUID에 일치하는 사용자를 찾을 수 없습니다.");
-
-        return problemDetail;
+        return CustomProblemDetail.<UserErrorCode>builder()
+                .errorCode(e.getErrorCode())
+                .problemDetail(problemDetail)
+                .build();
     }
 }

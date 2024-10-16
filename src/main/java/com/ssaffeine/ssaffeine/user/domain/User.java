@@ -1,25 +1,11 @@
 package com.ssaffeine.ssaffeine.user.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "users")
@@ -43,15 +29,15 @@ public class User {
 	@Column(name = "username", nullable = false, length = 50)
 	private String username;
 
-	@Column(name = "student_number", unique = true, length = 10)
-	private String studentNumber;
-
 	@Column(name = "region")
 	@Enumerated(value = EnumType.STRING)
 	private Region region;
 
 	@Column(name = "user_group")
 	private Integer group;
+
+	@Column(name = "semester")
+	private Integer semester;
 
 	@Column(name = "password", nullable = false, length = 60)
 	private String password;

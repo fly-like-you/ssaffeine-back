@@ -1,6 +1,7 @@
 package com.ssaffeine.ssaffeine.user.service;
 
-import com.ssaffeine.ssaffeine.exception.UserNotFoundException;
+import com.ssaffeine.ssaffeine.exception.UserException;
+import com.ssaffeine.ssaffeine.exception.errorcode.UserErrorCode;
 import com.ssaffeine.ssaffeine.user.domain.User;
 import com.ssaffeine.ssaffeine.user.dto.request.UserRequestDto;
 import com.ssaffeine.ssaffeine.user.dto.response.UserResponseDto;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
         // 사용자 이름 중복 체크
         Boolean exists = userRepository.existsByLoginId(loginId);
-        if (exists) throw new IllegalArgumentException("이미 존재하는 사용자입니다.");
+        if (exists) throw new UserException(HttpStatus.BAD_REQUEST, UserErrorCode.DUPLICATE_USER, loginId + " already exists");
 
         // User 엔티티 생성
         User userInfo = userMapper.toEntity(userRequestDto);
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto getUserById(UUID userId) {
         // 주어진 ID로 사용자 조회
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(HttpStatus.BAD_REQUEST, "User not found with id: " + userId));
+                .orElseThrow(() -> new UserException(HttpStatus.BAD_REQUEST, UserErrorCode.DUPLICATE_USER, "User not found with id: " + userId));
 
         // 조회된 사용자 정보를 UserResponseDto로 변환하여 반환
         return userMapper.toDto(user);
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto updateUser(UUID userId, UserRequestDto userRequestDto) {
         // 기존 사용자 조회
         User existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(HttpStatus.BAD_REQUEST, "User not found with id: " + userId));
+                .orElseThrow(() -> new UserException(HttpStatus.BAD_REQUEST, UserErrorCode.USER_NOT_FOUND , "User not found with id: " + userId));
 
         // 사용자 정보 업데이트
         existingUser.setUsername(userRequestDto.getUsername());
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(UUID userId) {
         // 사용자 존재 여부 확인 후 삭제
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(HttpStatus.BAD_REQUEST, "User not found with id: " + userId));
+                .orElseThrow(() -> new UserException(HttpStatus.BAD_REQUEST, UserErrorCode.USER_NOT_FOUND, "User not found with id: " + userId));
 
         userRepository.delete(user);
     }
