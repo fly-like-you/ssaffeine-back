@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+// 200
+// 2001
 @Getter
 @Builder
 @NoArgsConstructor
@@ -19,8 +20,8 @@ public class UserRequestDto {
     @Schema(description = "사용자의 한국어 이름", example = "홍길동")
     private String username;
 
-    @Schema(description = "사용자의 학번", example = "1252023")
-    private String studentNumber;
+    @Schema(description = "사용자의 학기", example = "12")
+    private Integer semester;
 
     @Schema(description = "사용자의 지역", example = "E005")
     private Region region;

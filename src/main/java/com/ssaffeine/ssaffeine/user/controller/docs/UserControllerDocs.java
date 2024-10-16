@@ -1,5 +1,6 @@
 package com.ssaffeine.ssaffeine.user.controller.docs;
 
+import com.ssaffeine.ssaffeine.advice.CustomProblemDetail;
 import com.ssaffeine.ssaffeine.user.dto.request.UserRequestDto;
 import com.ssaffeine.ssaffeine.user.dto.response.UserResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +29,9 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "201", description = "회원 가입 성공",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터 (필수 필드 누락 또는 형식 오류)",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomProblemDetail.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class)))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomProblemDetail.class)))
     })
     @PostMapping("/signup")
     ResponseEntity<UserResponseDto> signUp(
@@ -50,9 +50,9 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "200", description = "사용자 정보 조회 성공",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
             @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomProblemDetail.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomProblemDetail.class))),
     })
     @GetMapping("/{userId}")
     ResponseEntity<UserResponseDto> getUserById(
@@ -72,11 +72,11 @@ public interface UserControllerDocs {
             @ApiResponse(responseCode = "200", description = "사용자 정보 수정 성공",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
             @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomProblemDetail.class))),
             @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터 (필수 필드 누락 또는 형식 오류)",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomProblemDetail.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomProblemDetail.class))),
     })
     @PutMapping("/{userId}")
     ResponseEntity<UserResponseDto> updateUser(
@@ -96,9 +96,9 @@ public interface UserControllerDocs {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "사용자 삭제 성공"),
             @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomProblemDetail.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CustomProblemDetail.class))),
     })
     @DeleteMapping("/{userId}")
     ResponseEntity<Void> deleteUser(

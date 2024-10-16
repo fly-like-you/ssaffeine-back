@@ -3,11 +3,12 @@ package com.ssaffeine.ssaffeine.user.dto;
 import com.ssaffeine.ssaffeine.user.domain.Region;
 import com.ssaffeine.ssaffeine.user.domain.User;
 import com.ssaffeine.ssaffeine.user.domain.UserRole;
-import java.util.ArrayList;
-import java.util.Collection;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @ToString
 public class CustomUserDetails implements UserDetails {
@@ -26,6 +27,9 @@ public class CustomUserDetails implements UserDetails {
         return collection;
     }
 
+    public Integer getSemester() {
+        return user.getSemester();
+    }
     @Override
     public String getPassword() {
         return user.getPassword();
@@ -46,9 +50,7 @@ public class CustomUserDetails implements UserDetails {
     public UserRole getUserRole() {
         return user.getRole();
     }
-    public String getStudentNumber() {
-        return user.getStudentNumber();
-    }
+
 
     public Region getRegion() {
         return user.getRegion();

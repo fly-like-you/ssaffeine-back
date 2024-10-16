@@ -5,16 +5,15 @@ import com.ssaffeine.ssaffeine.user.domain.UserRole;
 import com.ssaffeine.ssaffeine.user.dto.CustomUserDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Jwts.SIG;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 @Slf4j
 @Component
@@ -49,9 +48,9 @@ public class JWTUtil {
                 .get("loginId", String.class);
     }
 
-    public String getStudentNumber(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-                .get("studentNumber", String.class);
+    public Integer getSemester(String token) {
+        return Integer.parseInt(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+                .get("semester", String.class));
     }
 
     public Region getRegion(String token) {
@@ -75,8 +74,7 @@ public class JWTUtil {
         String loginId = customUserDetails.getLoginId();
         String username = customUserDetails.getUsername();
         String userId = customUserDetails.getUserId();
-
-        String studentNumber = customUserDetails.getStudentNumber();
+        Integer semester = customUserDetails.getSemester();
         String region = customUserDetails.getRegion().toString();
         String group = customUserDetails.getGroup() + "";
 
@@ -86,7 +84,7 @@ public class JWTUtil {
                 .claim("role", role)
                 .claim("userId", userId)
                 .claim("loginId", loginId)
-                .claim("studentNumber", studentNumber)
+                .claim("semester", semester)
                 .claim("region", region)
                 .claim("group", group)
                 .issuedAt(new Date(System.currentTimeMillis()))

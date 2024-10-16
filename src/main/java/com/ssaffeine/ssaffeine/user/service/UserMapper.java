@@ -22,7 +22,7 @@ public class UserMapper {
         return User.builder()
                 .loginId(userRequestDto.getLoginId())
                 .username(userRequestDto.getUsername())
-                .studentNumber(userRequestDto.getStudentNumber())
+                .semester(userRequestDto.getSemester())
                 .region(userRequestDto.getRegion())
                 .group(userRequestDto.getGroup())
                 .password(bCryptPasswordEncoder.encode(userRequestDto.getPassword())) // 비밀번호 해싱 필요
@@ -36,7 +36,7 @@ public class UserMapper {
                 .userId(user.getUserId())
                 .loginId(user.getLoginId())
                 .username(user.getUsername())
-                .studentNumber(user.getStudentNumber())
+                .semester(user.getSemester())
                 .region(user.getRegion())
                 .group(user.getGroup())
                 .build();
