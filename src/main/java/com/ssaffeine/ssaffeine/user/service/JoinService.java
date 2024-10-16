@@ -27,9 +27,7 @@ public class JoinService {
 
         // 사용자 이름 중복 체크
         Boolean exists = userRepository.existsByLoginId(password);
-        if (exists) {
-            throw new IllegalArgumentException("이미 존재하는 사용자입니다.");
-        }
+        if (exists) throw new IllegalArgumentException("이미 존재하는 사용자입니다.");
 
         // User 엔티티 생성
         User user = new User();

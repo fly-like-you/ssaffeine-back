@@ -48,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter { // 요청에 대해서 한
         UserRole role = jwtUtil.getRole(token);
         String loginId = jwtUtil.getLoginId(token);
         UUID userId = UUID.fromString(jwtUtil.getUserId(token));
-        Integer semester = jwtUtil.getSemester(token);
+        Integer semester = Integer.parseInt(jwtUtil.getSemester(token));
 
         User user = User.builder()
                 .userId(userId)

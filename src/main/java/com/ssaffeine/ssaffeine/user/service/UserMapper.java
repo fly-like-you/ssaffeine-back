@@ -3,6 +3,7 @@ package com.ssaffeine.ssaffeine.user.service;
 import com.ssaffeine.ssaffeine.user.domain.User;
 import com.ssaffeine.ssaffeine.user.domain.UserRole;
 import com.ssaffeine.ssaffeine.user.dto.request.UserRequestDto;
+import com.ssaffeine.ssaffeine.user.dto.request.UserUpdateRequestDTO;
 import com.ssaffeine.ssaffeine.user.dto.response.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,7 +26,7 @@ public class UserMapper {
                 .semester(userRequestDto.getSemester())
                 .region(userRequestDto.getRegion())
                 .group(userRequestDto.getGroup())
-                .password(bCryptPasswordEncoder.encode(userRequestDto.getPassword())) // 비밀번호 해싱 필요
+                .password(bCryptPasswordEncoder.encode(userRequestDto.getPassword()))
                 .role(UserRole.ROLE_USER)
                 .build();
     }
@@ -39,6 +40,18 @@ public class UserMapper {
                 .semester(user.getSemester())
                 .region(user.getRegion())
                 .group(user.getGroup())
+                .role(user.getRole())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
                 .build();
+    }
+
+    public void update(User existingUser, UserUpdateRequestDTO updateDTO) {
+        // 사용자 정보 업데이트
+        existingUser.setUsername(updateDTO.getUsername());
+        existingUser.setSemester(updateDTO.getSemester());
+        existingUser.setRegion(updateDTO.getRegion());
+        existingUser.setGroup(updateDTO.getGroup());
+        existingUser.setPassword(bCryptPasswordEncoder.encode(updateDTO.getChangedPassword()));
     }
 }
