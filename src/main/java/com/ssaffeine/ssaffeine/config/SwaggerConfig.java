@@ -10,16 +10,26 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @Configuration    // 스프링 실행시 설정파일 읽어드리기 위한 어노테이션
 public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+        String ipAddress = "localhost"; // 기본값
+
+        try {
+            ipAddress = InetAddress.getLocalHost().getHostAddress(); // 시스템의 IP 주소 가져오기
+        } catch (UnknownHostException e) {
+            e.printStackTrace(); // 예외 처리
+        }
         return new OpenAPI()
                 .components(new Components().addSecuritySchemes("bearer-key",
                         new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")))
                 .addSecurityItem(new SecurityRequirement().addList("bearer-key"))
-                .addServersItem(new Server().url("http://localhost:8080"));
+                .addServersItem(new Server().url("http://" + ipAddress + ":8080"));
 
     }
 
