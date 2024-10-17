@@ -53,7 +53,7 @@ public class OrderServiceImplTest {
 		survey.setTitle("Sample Survey");
 
 		user = new User();
-		user.setUserId(UUID.randomUUID()); // UUID로 설정
+		user.setUuid(UUID.randomUUID()); // UUID로 설정
 		user.setUsername("User Name");
 
 		drink = new Drink();
@@ -66,12 +66,12 @@ public class OrderServiceImplTest {
 		// Given
 		OrderRequestDto orderRequestDto = new OrderRequestDto();
 		orderRequestDto.setSurveyId(1L);
-		orderRequestDto.setUserId(user.getUserId()); // UUID를 문자열로 설정
+		orderRequestDto.setUserId(user.getUuid()); // UUID를 문자열로 설정
 		orderRequestDto.setDrinkId(1L);
 		orderRequestDto.setQuantity(2);
 
 		when(surveyRepository.findById(1L)).thenReturn(Optional.of(survey));
-		when(userRepository.findByUserId(user.getUserId())).thenReturn(user);
+		when(userRepository.findByUuid(user.getUuid())).thenReturn(user);
 		when(drinkRepository.findById(1L)).thenReturn(Optional.of(drink));
 
 		Order savedOrder = new Order();
@@ -88,7 +88,7 @@ public class OrderServiceImplTest {
 		assertEquals(savedOrder.getOrderId(), responseDto.getOrderId());
 		assertEquals(survey.getSurveyId(), responseDto.getSurveyId());
 		assertEquals(survey.getTitle(), responseDto.getSurveyTitle());
-		assertEquals(user.getUserId(), responseDto.getUserId()); // UUID를 문자열로 변환하여 비교
+		assertEquals(user.getUuid(), responseDto.getUserId()); // UUID를 문자열로 변환하여 비교
 		assertEquals(user.getUsername(), responseDto.getUsername());
 		assertEquals(drink.getDrinkId(), responseDto.getDrinkId());
 		assertEquals(drink.getName(), responseDto.getDrinkName());

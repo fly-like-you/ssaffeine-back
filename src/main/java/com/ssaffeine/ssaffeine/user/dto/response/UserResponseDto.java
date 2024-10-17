@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponseDto {
-    private UUID userId;
+    private UUID uuid;
     private String loginId;
     private String username;
     private Integer semester;

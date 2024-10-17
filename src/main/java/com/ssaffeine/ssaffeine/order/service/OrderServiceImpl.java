@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
         Survey survey = surveyRepository.findById(orderRequestDto.getSurveyId()).orElse(null);
         order.setSurvey(survey);
 
-        User user = userRepository.findByUserId(orderRequestDto.getUserId());
+        User user = userRepository.findByUuid(orderRequestDto.getUserId());
         order.setUser(user);
         order.setOrderStatus(OrderStatus.ORDER_PENDING);
 
@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
                 .orderId(savedOrder.getOrderId())
                 .surveyId(survey.getSurveyId())
                 .surveyTitle(survey.getTitle())
-                .userId(user.getUserId())
+                .userId(user.getUuid())
                 .username(user.getUsername())
                 .drinkId(drink.getDrinkId())
                 .drinkName(drink.getName())

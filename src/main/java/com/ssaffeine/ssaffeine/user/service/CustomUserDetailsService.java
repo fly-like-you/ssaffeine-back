@@ -1,6 +1,7 @@
 package com.ssaffeine.ssaffeine.user.service;
 
 
+import com.ssaffeine.ssaffeine.exception.CustomAuthenticationException;
 import com.ssaffeine.ssaffeine.user.domain.User;
 import com.ssaffeine.ssaffeine.user.dto.CustomUserDetails;
 import com.ssaffeine.ssaffeine.user.repository.UserRepository;
@@ -23,13 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     // 사용자의 아이디로 유저 찾기
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
-        User userData = userRepository.findByLoginId(loginId);
-
-        // 검증 실행
-        if (userData != null) {
-            return new CustomUserDetails(userData);
-        }
-
-        return null;
+        User userData = userRepository.findByLoginId(loginId).get();
+        return new CustomUserDetails(userData);
     }
 }

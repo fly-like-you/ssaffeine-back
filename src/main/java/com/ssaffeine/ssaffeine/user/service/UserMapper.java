@@ -34,7 +34,7 @@ public class UserMapper {
     // User 엔티티를 UserResponseDto로 변환하는 메서드
     public UserResponseDto toDto(User user) {
         return UserResponseDto.builder()
-                .userId(user.getUserId())
+                .uuid(user.getUuid())
                 .loginId(user.getLoginId())
                 .username(user.getUsername())
                 .semester(user.getSemester())

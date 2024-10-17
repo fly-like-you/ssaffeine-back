@@ -9,11 +9,9 @@ import com.ssaffeine.ssaffeine.surveys.domain.Survey;
 import com.ssaffeine.ssaffeine.surveys.dto.SurveyRequestDto;
 import com.ssaffeine.ssaffeine.surveys.dto.SurveyResponseDto;
 import com.ssaffeine.ssaffeine.surveys.repository.SurveyRepository;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -71,7 +69,7 @@ public class SurveyServiceImpl implements SurveyService{
                 orderList.stream()
                         .map(order -> OrderResponseDto.builder()
                                 .orderId(order.getOrderId())
-                                .userId(order.getUser().getUserId())
+                                .userId(order.getUser().getUuid())
                                 .orderStatus(order.getOrderStatus())
                                 .createdAt(order.getCreatedAt())
                                 .updatedAt(order.getUpdatedAt())
