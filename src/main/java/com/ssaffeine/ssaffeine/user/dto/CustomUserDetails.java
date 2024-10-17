@@ -44,8 +44,8 @@ public class CustomUserDetails implements UserDetails {
 
         return user.getLoginId();
     }
-    public String getUserId() {
-        return user.getUserId() + "";
+    public String getUuid() {
+        return user.getUuid() + "";
     }
     public UserRole getUserRole() {
         return user.getRole();

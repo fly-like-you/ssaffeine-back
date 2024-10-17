@@ -4,6 +4,7 @@ package com.ssaffeine.ssaffeine.config;
 import com.ssaffeine.ssaffeine.jwt.JWTUtil;
 import com.ssaffeine.ssaffeine.jwt.JwtFilter;
 import com.ssaffeine.ssaffeine.jwt.LoginFilter;
+import com.ssaffeine.ssaffeine.security.CustomAuthenticationEntryPoint;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +27,13 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @Configuration
 @EnableWebSecurity // Security라는것을 알리기
 public class SecurityConfig {
-
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
 
     @Autowired
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
+    public SecurityConfig(CustomAuthenticationEntryPoint authenticationEntryPoint, AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
     }
@@ -52,68 +54,56 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+        // CORS 설정
+        http.cors(cors -> cors.configurationSource(request -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); // 허용할 Origin
+            configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 HTTP 메서드 허용
+            configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
+            configuration.setAllowCredentials(true); // 자격 증명 허용
+            configuration.setMaxAge(3600L); // Preflight 요청 캐시 시간
+            configuration.setExposedHeaders(Collections.singletonList("Authorization")); // 노출할 헤더 설정
+            return configuration;
+        }));
 
-                    @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-
-                        CorsConfiguration configuration = new CorsConfiguration();
-                        // 허용할 포트 (3000)
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-                        // 허용할 메서드 (GET, POST, 등)
-                        configuration.setAllowedMethods(Collections.singletonList("*"));
-                        configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Collections.singletonList("*"));
-                        configuration.setMaxAge(3600L);
-
-                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
-                        return configuration;
-                    }
-                })));
         // csrf disable
         // 세션방식에서는 세션이 고정이기때문에 고정해줘야함
         // jwt는 세션이 stateless하기 때문에 disable해줘도댐
         http
                 .csrf((auth) -> auth.disable());
-        // form 로그인 방식 disable
         http
                 .formLogin((auth) -> auth.disable());
-        // http basic 인증 방식 disable
         http
                 .httpBasic((auth) -> auth.disable());
-
-        // 경로별로 인가 작업 특정 경로에 대해서 권한을 가져야하는 지 등을 설정
-//        http
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/login", "/", "/join", "/swagger-ui").permitAll()  // 모든 권한 허용
-//                        .requestMatchers("/admin").hasRole("ADMIN")              // admin만 접근가능
-////                        .anyRequest().authenticated()                              // 나머지는 로그인한 사용자만 접근 가능
-//                );
-
         http
                 .addFilterBefore(
-                        new JwtFilter(jwtUtil), LoginFilter.class
+                        new JwtFilter(authenticationEntryPoint, jwtUtil), LoginFilter.class
                 );
 
-        LoginFilter loginFilter = new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil);
+
+        LoginFilter loginFilter = new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, authenticationEntryPoint);
         loginFilter.setUsernameParameter("loginId");
         log.info(loginFilter.getUsernameParameter());
         log.info(loginFilter.getPasswordParameter());
-
-
-
         http
                 .addFilterAt(
                         loginFilter,
                         UsernamePasswordAuthenticationFilter.class
                 );
-
+        http
+                .exceptionHandling(exception -> exception
+                .authenticationEntryPoint(authenticationEntryPoint)
+        );
         // 세션 설정
-        // jwt에서는 세션을 statless 상태로 관리한다. 이걸 알려줘야함
         http
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        // 경로별로 인가 작업 특정 경로에 대해서 권한을 가져야하는 지 등을 설정
+        http
+                .authorizeHttpRequests((auth) -> auth
+                                .requestMatchers("/api/users/login", "/", "/api/users/signup", "/swagger-ui").permitAll()  // 모든 권한 허용
+                                .requestMatchers("/admin").hasRole("ADMIN")              // admin만 접근가능
+//                        .anyRequest().authenticated()                              // 나머지는 로그인한 사용자만 접근 가능
+                );
 
         return http.build();
     }

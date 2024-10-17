@@ -63,7 +63,7 @@ public class UserController implements UserControllerDocs {
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @Valid @RequestBody UserUpdateRequestDTO userRequestDto) {
 
-        UUID userId = UUID.fromString(customUserDetails.getUserId());
+        UUID userId = UUID.fromString(customUserDetails.getUuid());
         log.info("user id: {}", userId);
         log.info("requestDto={}", userRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userId, userRequestDto));
@@ -72,7 +72,7 @@ public class UserController implements UserControllerDocs {
     @Override
     @DeleteMapping
     public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        UUID userId = UUID.fromString(customUserDetails.getUserId());
+        UUID userId = UUID.fromString(customUserDetails.getUuid());
         userService.deleteUser(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }

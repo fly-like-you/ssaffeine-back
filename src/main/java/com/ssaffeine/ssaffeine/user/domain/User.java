@@ -21,7 +21,7 @@ public class User {
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@Column(columnDefinition = "BINARY(16)", name = "user_id", updatable = false, nullable = false, unique = true)
-	private UUID userId;
+	private UUID uuid;
 
 	@Column(name = "login_id", nullable = false, length = 50)
 	private String loginId;
@@ -43,6 +43,7 @@ public class User {
 	private String password;
 
 	@Column(name = "user_role", nullable = false)
+	@Enumerated(value = EnumType.STRING)
 	private UserRole role;
 
 	@Column(name = "created_at", updatable = false)

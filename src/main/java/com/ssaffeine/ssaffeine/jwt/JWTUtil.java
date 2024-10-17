@@ -38,9 +38,9 @@ public class JWTUtil {
         return UserRole.valueOf(role);
     }
 
-    public String getUserId(String token) {
+    public String getUuid(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-                .get("userId", String.class);
+                .get("uuid", String.class);
     }
 
     public String getLoginId(String token) {
@@ -73,7 +73,7 @@ public class JWTUtil {
     public String createJwt(CustomUserDetails customUserDetails, GrantedAuthority auth, Long expiredMs) {
         String loginId = customUserDetails.getLoginId();
         String username = customUserDetails.getUsername();
-        String userId = customUserDetails.getUserId();
+        String uuid = customUserDetails.getUuid();
         String semester = String.valueOf(customUserDetails.getSemester());
         String region = customUserDetails.getRegion().toString();
         String group = customUserDetails.getGroup() + "";
@@ -82,7 +82,7 @@ public class JWTUtil {
         return Jwts.builder()
                 .claim("username", username)
                 .claim("role", role)
-                .claim("userId", userId)
+                .claim("uuid", uuid)
                 .claim("loginId", loginId)
                 .claim("semester", semester)
                 .claim("region", region)
