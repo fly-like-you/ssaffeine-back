@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,6 +31,16 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
+    private static final String[] PERMIT_URL_ARRAY = {
+            /* swagger v3 */
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/swagger-ui/index.html",
+            "/swagger-resources/**",
+            "/swagger-ui/index.css",
+            "/swagger-ui/swagger-ui-bundle.js"
+    };
 
     @Autowired
     public SecurityConfig(CustomAuthenticationEntryPoint authenticationEntryPoint, AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
@@ -92,21 +103,45 @@ public class SecurityConfig {
                 );
         http
                 .exceptionHandling(exception -> exception
-                .authenticationEntryPoint(authenticationEntryPoint)
-        );
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                );
         // 세션 설정
         http
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         // 경로별로 인가 작업 특정 경로에 대해서 권한을 가져야하는 지 등을 설정
+//        http
+//                .authorizeHttpRequests((auth) -> auth
+//                                .requestMatchers("/api/users/login", "/", "/api/users/signup", "/swagger-ui/**").permitAll()  // 모든 권한 허용
+//                                .requestMatchers("/admin").hasRole("ADMIN")              // admin만 접근가능
+//                        .anyRequest().authenticated()                              // 나머지는 로그인한 사용자만 접근 가능
+//                );
+
+//            http
+//                    .authorizeHttpRequests((auth) -> auth
+//                            .requestMatchers("/api/users/login", "/", "/api/users/signup").permitAll()  // 로그인 및 회원가입 허용
+//                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()  // Swagger 관련 경로 허용
+//                            .requestMatchers("/admin").hasAuthority("ADMIN")  // admin 권한 필요
+//                            .anyRequest().authenticated()  // 나머지 경로는 인증 필요
+//                    );
+
         http
                 .authorizeHttpRequests((auth) -> auth
-                                .requestMatchers("/api/users/login", "/", "/api/users/signup", "/swagger-ui").permitAll()  // 모든 권한 허용
-                                .requestMatchers("/admin").hasRole("ADMIN")              // admin만 접근가능
-//                        .anyRequest().authenticated()                              // 나머지는 로그인한 사용자만 접근 가능
+                        .requestMatchers(PERMIT_URL_ARRAY).permitAll()
+                        // 로그인, 회원가입 경로 허용
+                        .requestMatchers("/api/users/login", "/", "/api/users/signup").permitAll()
+                        // Swagger 관련 경로 허용 (정적 리소스 포함)
+
+                        // 그 외 모든 요청은 인증 필요
+                        .anyRequest().authenticated()
                 );
 
         return http.build();
     }
 
-
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web
+//                .ignoring()
+//                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**");  // Swagger UI와 관련된 정적 리소스를 인증 없이 허용
+//    }
 }

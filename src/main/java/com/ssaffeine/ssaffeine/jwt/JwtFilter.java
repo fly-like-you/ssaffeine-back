@@ -84,14 +84,21 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         // 필터를 적용하지 않을 경로 리스트
-        List<String> excludedPaths = Arrays.asList("/api/users/signup", "/api/users/login");
+        List<String> excludedPaths = Arrays.asList(
+                "/api/users/signup",            // 회원가입 경로
+                "/api/users/login",             // 로그인 경로
+                "/swagger-ui/",       // Swagger UI 메인 페이지
+                "/v3/api-docs"               // Swagger API 문서 경로
+        );
 
         // 현재 요청 URI
         String requestURI = request.getRequestURI();
 
         // 요청 URI가 필터를 적용하지 않을 경로에 포함되는지 확인
-        return excludedPaths.contains(requestURI);
+        // `/**` 경로 패턴 처리를 위해 `startsWith` 사용
+        return excludedPaths.stream().anyMatch(requestURI::startsWith);
     }
+
 
 
 }
