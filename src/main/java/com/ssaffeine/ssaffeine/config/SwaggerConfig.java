@@ -7,12 +7,13 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
+@Slf4j
 @Configuration    // 스프링 실행시 설정파일 읽어드리기 위한 어노테이션
 public class SwaggerConfig {
 
@@ -23,7 +24,7 @@ public class SwaggerConfig {
         try {
             ipAddress = InetAddress.getLocalHost().getHostAddress(); // 시스템의 IP 주소 가져오기
         } catch (UnknownHostException e) {
-            e.printStackTrace(); // 예외 처리
+            log.info(e.getMessage());
         }
         return new OpenAPI()
                 .components(new Components().addSecuritySchemes("bearer-key",
